@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "pipeline_version": "v3 (improved architecture per plan)",
+  "best_generator": "TVAE",
+  "best_augmentation_ratio": 1.0,
+  "final_model": "XGBoost (tuned, augmented)",
+  "is_ensemble": false,
+  "decision_threshold": 0.05,
+  "threshold_strategy": "business_cost",
+  "test_roc_auc": 0.9730728352763546,
+  "test_recall": 0.8964516129032258,
+  "test_precision": 0.38026819923371646,
+  "test_f1": 0.5340122982321291,
+  "n_experiments_logged": 31,
+  "generated_at": "2026-07-11T01:58:21.919006"
+}

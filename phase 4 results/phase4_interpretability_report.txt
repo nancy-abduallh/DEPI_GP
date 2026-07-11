@@ -1,0 +1,55 @@
+
+MODEL INTERPRETABILITY REPORT — Phase 4
+========================================
+Model              : XGBoost (tuned, augmented)
+Is ensemble        : False
+Decision threshold : 0.0500  (strategy: business_cost)
+Test ROC-AUC       : 0.9731
+Test recall        : 0.8965
+Test precision      : 0.3803
+Explained sample   : 4,000 transactions (SHAP TreeExplainer, exact)
+
+GLOBAL FINDINGS
+---------------
+The model's decisions are driven primarily by:
+   1. card1_te
+   2. P_emaildomain_te
+   3. C1
+   4. C13
+   5. R_emaildomain_te
+   6. TransactionDT
+   7. ProductCD_amt_zscore
+   8. DT_hour_of_day
+   9. card1_amt_std
+  10. card2_te
+
+These align with domain intuition for card-fraud: target-encoded card/email risk
+profiles, transaction amount behaviour, and time-of-day signals carry the most weight.
+The SHAP ranking was cross-checked against the model's built-in gain importance and
+agreed on the leading features. Dependence and interaction plots (Section 4) show that
+several of the top features interact non-additively — e.g. amount-related features
+often flip sign depending on time-of-day — which additive gain-based importances alone
+would not reveal.
+
+LOCAL EXPLAINABILITY
+--------------------
+Every prediction can be decomposed into per-feature SHAP contributions in log-odds
+space and rendered as a waterfall plot. The explain_transaction() function converts the
+top contributors into a plain-English sentence suitable for analyst review and audit
+trails.
+
+CASE STUDIES
+------------
+  A. Caught fraud   : row 9627  — high-confidence correct flag.
+  B. Missed fraud   : row 11342  — false negative for error analysis.
+  C. False alarm    : row 48726  — false positive for threshold review.
+
+ENSEMBLE NOTE
+-------------
+This model is a single estimator; SHAP values are exact for the deployed model.
+
+REGULATORY NOTE
+---------------
+Because SHAP is additive and locally accurate, each automated decision is accompanied
+by a faithful, reproducible reason. This supports adverse-action explanation
+requirements and gives analysts a defensible basis for review.
